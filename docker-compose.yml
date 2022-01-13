@@ -8,4 +8,33 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ./src:/usr/app/src
+      - ./src:/usr/app/src # Comentar em produção
+  postgres:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 'postgres'
+    ports:
+      - '5432:5432'
+    networks:
+      - postgres-network
+    volumes:
+      - ./db/postgres/data:/var/lib/postgresql/data
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'postgres@pgadmin.com'
+      PGADMIN_DEFAULT_PASSWORD: 'senha'
+    ports:
+      - '15432:80'
+    depends_on:
+      - postgres
+    networks:
+      - postgres-network
+    logging:
+      driver: none
+
+networks:
+  postgres-network:
+    driver: bridge
