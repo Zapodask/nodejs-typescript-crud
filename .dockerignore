@@ -3,3 +3,4 @@ db
 .eslintrc.js
 .gitignore
 README.md
+.env.example

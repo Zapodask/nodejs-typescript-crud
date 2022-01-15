@@ -9,15 +9,22 @@ services:
       - 8000:8000
     volumes:
       - ./src:/usr/app/src # Comentar em produção
+    depends_on:
+      - postgres
+    networks:
+      - app-network
   postgres:
     container_name: postgres
     image: postgres
     environment:
-      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: db
     ports:
       - '5432:5432'
     networks:
       - postgres-network
+      - app-network
     volumes:
       - ./db/postgres/data:/var/lib/postgresql/data
   pgadmin:
@@ -36,5 +43,7 @@ services:
       driver: none
 
 networks:
+  app-network:
+    driver: bridge
   postgres-network:
     driver: bridge
