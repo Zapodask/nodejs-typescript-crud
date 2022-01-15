@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { validationResult } from 'express-validator'
 
 import { BookModel } from '../database/models/BookModel'
 
@@ -10,6 +11,11 @@ class BookController {
     }
 
     public async store (req: Request, res: Response): Promise<Response> {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() })
+        }
+
         const { title, description } = req.body
 
         const book = await BookModel.create({ title, description })
@@ -29,17 +35,25 @@ class BookController {
         const { id } = req.params
         const { title, description } = req.body
 
-        BookModel.update({ title, description }, { where: { id: id } })
+        const book = await BookModel.update({ title, description }, { where: { id: id } })
 
-        return res.status(200).json({ message: 'Book updated' })
+        if (book.includes(1)) {
+            return res.status(200).json({ message: 'Book updated' })
+        } else {
+            return res.status(400).json({ message: 'Error when updating' })
+        }
     }
 
     public async delete (req: Request, res: Response): Promise<Response> {
         const { id } = req.params
 
-        BookModel.destroy({ where: { id: id } })
+        const book = await BookModel.destroy({ where: { id: id } })
 
-        return res.status(200).json({ message: 'Book deleted' })
+        if (book === 1) {
+            return res.status(200).json({ message: 'Book deleted' })
+        } else {
+            return res.status(400).json({ message: 'Error when deleting' })
+        }
     }
 }
 
