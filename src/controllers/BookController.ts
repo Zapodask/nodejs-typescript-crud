@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 
-import { BookModel } from '../database/models/BookModel'
+import db from '../models'
 
 class BookController {
     public async index (req: Request, res: Response): Promise<Response> {
-        const books = await BookModel.findAll()
+        const books = await db.Books.findAll()
 
         return res.status(200).json(books)
     }
@@ -18,7 +18,7 @@ class BookController {
 
         const { title, description } = req.body
 
-        const book = await BookModel.create({ title, description })
+        const book = await db.Books.create({ title, description })
 
         return res.status(201).json(book)
     }
@@ -26,7 +26,7 @@ class BookController {
     public async get (req: Request, res: Response): Promise<Response> {
         const { id } = req.params
 
-        const book = await BookModel.findByPk(id)
+        const book = await db.Books.findByPk(id)
 
         return res.status(200).json(book)
     }
@@ -35,7 +35,7 @@ class BookController {
         const { id } = req.params
         const { title, description } = req.body
 
-        const book = await BookModel.update({ title, description }, { where: { id: id } })
+        const book = await db.Books.update({ title, description }, { where: { id: id } })
 
         if (book.includes(1)) {
             return res.status(200).json({ message: 'Book updated' })
@@ -47,7 +47,7 @@ class BookController {
     public async delete (req: Request, res: Response): Promise<Response> {
         const { id } = req.params
 
-        const book = await BookModel.destroy({ where: { id: id } })
+        const book = await db.Books.destroy({ where: { id: id } })
 
         if (book === 1) {
             return res.status(200).json({ message: 'Book deleted' })

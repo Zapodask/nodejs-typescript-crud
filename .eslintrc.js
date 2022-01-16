@@ -14,6 +14,8 @@ module.exports = {
         sourceType: 'module'
     },
     rules: {
-        indent: ['error', 4]
+        indent: ['error', 4],
+        '@typescript-eslint/no-var-requires': 0,
+        '@typescript-eslint/no-explicit-any': 0
     }
 }

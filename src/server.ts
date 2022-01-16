@@ -1,12 +1,13 @@
 import app from './app'
-import db from './database/db'
+import db from './models'
 
-app.listen(process.env.PORT || 3000, async () => {
-    await db.sync()
-    try {
-        await db.authenticate()
-        console.log('DB connected')
-    } catch (error) {
-        console.error('Unable to connect to the database:', error)
-    }
+db.sequelize.sync().then(() => {
+    app.listen(process.env.PORT || 3000, async () => {
+        try {
+            await db.sequelize.authenticate()
+            console.log('DB connected')
+        } catch (error) {
+            console.error('Unable to connect to the database:', error)
+        }
+    })
 })
