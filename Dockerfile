@@ -5,6 +5,7 @@ WORKDIR /usr/app
 COPY package.json ./
 COPY yarn.lock ./
 COPY .env ./
+COPY tsconfig.json ./
 
 RUN yarn
 

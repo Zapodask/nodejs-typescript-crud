@@ -1,10 +1,14 @@
 # Crud com nodejs typescript
 
+## Crud de livros
+
 ## Tecnologias utilizadas
 
 * Nodejs
 * TypeScript
 * Express
+* Docker
+* PostgreSQL
 
 ## Setup
 
@@ -19,11 +23,7 @@
 
 2. Inicie o projeto
     ```bash
-    yarn dev
-
-    # Ou
-
-    npm run dev
+    docker-compose up --build
     ```
 
 ## License
